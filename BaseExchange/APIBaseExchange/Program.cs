@@ -1,3 +1,5 @@
+using App.Interfaces;
+using App.Services;
 using App.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -15,6 +17,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DBContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IOrdemServices, OrdemServices>();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblyContaining<OrderRequestValidator>();
