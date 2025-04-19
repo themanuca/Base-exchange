@@ -1,0 +1,36 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35806.99
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIBaseExchange", "APIBaseExchange\APIBaseExchange.csproj", "{013D560E-42E1-42EF-BFA6-0FCD8D092D91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{6E94E8CF-CAB4-4149-B53D-2BBD10BAA257}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infra", "Infra\Infra.csproj", "{A85D72BC-030D-4751-ACF7-E517DC59E188}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{013D560E-42E1-42EF-BFA6-0FCD8D092D91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{013D560E-42E1-42EF-BFA6-0FCD8D092D91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{013D560E-42E1-42EF-BFA6-0FCD8D092D91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{013D560E-42E1-42EF-BFA6-0FCD8D092D91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E94E8CF-CAB4-4149-B53D-2BBD10BAA257}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E94E8CF-CAB4-4149-B53D-2BBD10BAA257}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E94E8CF-CAB4-4149-B53D-2BBD10BAA257}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E94E8CF-CAB4-4149-B53D-2BBD10BAA257}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A85D72BC-030D-4751-ACF7-E517DC59E188}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A85D72BC-030D-4751-ACF7-E517DC59E188}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A85D72BC-030D-4751-ACF7-E517DC59E188}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A85D72BC-030D-4751-ACF7-E517DC59E188}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {70D3C70E-FEEC-4630-A710-3F6A24D01870}
+	EndGlobalSection
+EndGlobal
