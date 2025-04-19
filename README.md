@@ -39,6 +39,7 @@ Tabelas criadas:
  O SQL Server ta rodando em um container, comando de criação da base.
 
 ## ⚙️  Design-time DbContext Factory 
+Foi criado um DBContextFactory para caso precisem execultar a migration sem execultar a aplicação.
 Devido a separação dos projetos em camadas (Infra, Domain, App, API), foi necessário criar uma DBContextFactory que buscasse a configuração da API para permitir a geração de migrations com ```dotnet ef```.
 
 Hedando o ```IDesignTimeDbContextFactory<ApplicationDbContext>``` para permitir a execução correta dos comandos de migrations via CLI (dotnet ef migrations add, dotnet ef database update), já que o EF Core não consegue resolver a injeção de dependência automaticamente fora da aplicação ASP.NET.
