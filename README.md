@@ -1,2 +1,2 @@
 # Base-exchange
-Aplicação para calcular a Exposição Financeira por ativo.
+Aplicação Deve calcular a Exposição Financeira por ativo,
