@@ -1,3 +1,6 @@
+using App.Validators;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -12,6 +15,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DBContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
+builder.Services.AddValidatorsFromAssemblyContaining<OrderRequestValidator>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
