@@ -37,6 +37,14 @@ Tabelas criadas:
 - ExposicoesFinanceiras: armazena a exposição financeira atual de cada ativo.
 
  O SQL Server ta rodando em um container, comando de criação da base.
+
+## ⚙️  Design-time DbContext Factory 
+Devido a separação dos projetos em camadas (Infra, Domain, App, API), foi necessário criar uma DBContextFactory que buscasse a configuração da API para permitir a geração de migrations com ```dotnet ef```.
+
+Hedando o ```IDesignTimeDbContextFactory<ApplicationDbContext>``` para permitir a execução correta dos comandos de migrations via CLI (dotnet ef migrations add, dotnet ef database update), já que o EF Core não consegue resolver a injeção de dependência automaticamente fora da aplicação ASP.NET.
+
+A classe utiliza ConfigurationBuilder apontando para o caminho do appsettings.json, garantindo que a connection string seja lida de forma centralizada.
+
 ### Docker
 Estou utlizando um container do SQL Server.
 
