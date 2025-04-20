@@ -81,7 +81,9 @@ Criado um projeto de Teste xUnit, ```Testes```.
 - Testes unitários implementados com xUnit
  
 - Banco em memória para simular comportamento real
-- Casos testados:
+- Casos testados:git clone https://github.com/themanuca/Base-exchange.git
+cd Base-exchange
+
   - Ordem válida
   - Exposição acima do limite
   - Ordem de venda
@@ -92,6 +94,19 @@ Libs instaladas:
 - ```EntityFrameworkCore.InMemory```
   
 Foi adicionado a referencia da camada do App ```App.csproj```.
+
+## 🚀 Como Executar o Projeto
+**Clone o projeto**
+```
+git clone https://github.com/themanuca/Base-exchange.git
+cd Base-exchange
+```
+**Configure o banco de dados (SQL Server)**
+```
+ "ConnectionStrings": {
+   "DefaultConnection": "Server=localhost;Database=BaseExchangedb;Encrypt=true;TrustServerCertificate=true;"
+ },
+```
 
 ### 🐳 Docker
 Estou utlizando um container do SQL Server.
