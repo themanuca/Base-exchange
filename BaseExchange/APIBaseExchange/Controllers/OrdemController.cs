@@ -16,7 +16,9 @@ namespace APIBaseExchange.Controllers
             var response = await _ordemService.ProcessarOrdemAsync(request);
 
             if (!response.Sucesso)
+            {
                 return BadRequest(response);
+            }
 
             return Ok(response);
         }
