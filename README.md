@@ -75,6 +75,24 @@ Aproveitei para usar um recurso novo, que veio junto com o C# 12, chamado "Prima
 
 Com o novo recuso abrstraio a necessidade de criar um construtor, passando o parametro no corpo da classe.
 
+## 🧪 Testes Automatizados
+Criado um projeto de Teste xUnit, ```Testes```.
+
+- Testes unitários implementados com xUnit
+ 
+- Banco em memória para simular comportamento real
+- Casos testados:
+  - Ordem válida
+  - Exposição acima do limite
+  - Ordem de venda
+  - Ativo inválido
+    
+Libs instaladas:
+- ```Moq```
+- ```EntityFrameworkCore.InMemory```
+  
+Foi adicionado a referencia da camada do App ```App.csproj```.
+
 ### Docker
 Estou utlizando um container do SQL Server.
 
