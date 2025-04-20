@@ -8,7 +8,7 @@ Aplicação Deve calcular a Exposição Financeira por ativo.
 - DOCKER;
 - REACTJS
 
-### Banco de Dados & ORM
+### 🛠️ Banco de Dados & ORM
  O projeto utiliza Entity Framework Core com SQL Server para persistência dos dados.
  
  Geralmente monto a query na mão, mas o "migration" facilita muito esse processo.
@@ -44,7 +44,7 @@ Aplicação Deve calcular a Exposição Financeira por ativo.
  
  Hedando o ```IDesignTimeDbContextFactory<DBContext>``` para permitir a execução correta dos comandos de migrations via CLI (dotnet ef migrations add, dotnet ef database update), já que o EF Core não    consegue resolver a injeção de dependência automaticamente fora da aplicação ASP.NET.
   A classe utiliza ConfigurationBuilder apontando para o caminho do appsettings.json, garantindo que a connection string seja lida de forma centralizada.
-## Camada App
+## 🧱 Camada App
  Foi criado a service, sua interface e os DTOs. Inicialmente tinha pensado em criar uma camada Contract, para os DTOs, mas como o projeto é pequeno e os DTOs só serão usados no APP e API, optei em manter no mesmo.
  
  Services:
@@ -63,11 +63,11 @@ Aplicação Deve calcular a Exposição Financeira por ativo.
   
  App depende da camada ```Infra```, por causa do **DBContext**, que é chamado no construtor.
 
-## Camda Domain
+## 🧱 Camda Domain
 Na camada de dominio foi criado as entidades/modelos, ```ExposicaoFinaceira``` e ```Ordem```. 
 Respeitando os principios do DDD, a dominio se mantem isolada.
 
-## Camada Infra
+## 🧱 Camada Infra
 Na Infra temos a conexão com o banco e a migration. Caso haja a necessidade da migração sem rodar o projeto foi criado um factory para instaciar o dbocontext sem ta em runtime.
 ```DBContext , DBContextFactory```.
 ## Primary Constructors
@@ -93,6 +93,6 @@ Libs instaladas:
   
 Foi adicionado a referencia da camada do App ```App.csproj```.
 
-### Docker
+### 🐳 Docker
 Estou utlizando um container do SQL Server.
 
