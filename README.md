@@ -142,5 +142,17 @@ Body:
 ```
 
 ### 🐳 Docker
-Estou utlizando um container do SQL Server.
+
+O `docker-compose.yml` está configurado para subir apenas a API por padrão, pois estou usando um container do SQLServer que ja tenho no meu docker.
+
+Caso deseje rodar o SQL Server também via Docker, **basta descomentar a seção `sqlserver` e a referência em `depends_on`**.
+
+📌 A connection string no `appsettings.Development.json` está configurada para:
+```json
+"Server=host.docker.internal,1433;Database=BaseExchangeDb;User=sa;Password=SenhaForte123!;TrustServerCertificate=True;"
+```
+No momento, estou usando o `appsettings.json` local com:
+```
+ "Server=localhost;Database=BaseExchangedb;Encrypt=true;TrustServerCertificate=true;User Id=sa;Password=SenhaForte123!;"
+```
 

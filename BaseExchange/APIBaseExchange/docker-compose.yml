@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  api:
+    container_name: baseexchange-api
+    build:
+      context: .
+      dockerfile: APIBaseExchange/Dockerfile
+    ports:
+      - "5000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - baseexchange-network
+    #depends_on: 
+      # - sqlserver
+
+  # sqlserver:
+  #   image: mcr.microsoft.com/mssql/server:2022-lts
+  #   container_name: baseexchange-sql
+  #   environment:
+  #     - SA_PASSWORD=SuaSenhaForte123!
+  #     - ACCEPT_EULA=Y
+  #   ports:
+  #     - "1433:1433"
+  #   volumes:
+  #     - sql_data:/var/opt/mssql
+  #   networks:
+  #     - baseexchange-network
+
+volumes:
+  sql_data:
+
+networks:
+  baseexchange-network:
+    driver: bridge
