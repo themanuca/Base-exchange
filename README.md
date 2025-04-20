@@ -95,6 +95,13 @@ Libs instaladas:
   
 Foi adicionado a referencia da camada do App ```App.csproj```.
 
+**Executar Teste**
+Acesse a pasta do projeto e execute o teste:
+```
+cd Testes
+dotnet testados
+```
+
 ## 🚀 Como Executar o Projeto
 **Clone o projeto**
 ```
@@ -106,6 +113,32 @@ cd Base-exchange
  "ConnectionStrings": {
    "DefaultConnection": "Server=localhost;Database=BaseExchangedb;Encrypt=true;TrustServerCertificate=true;"
  },
+```
+Criação da base: ```CREATE DATABASE BaseExchangedb```
+
+**Restaure os pacotes**
+```dotnet restore```
+**Execute a migration e crie o banco**
+A configuração e conexão com banco se encontra na camada Infra.
+```
+dotnet ef database update --project Infra
+ ```
+**Execute a aplicação**
+```dotnet run --project APIBaseExchange```
+
+## 📮 Testando a API
+Endpoint principal:
+POST /api/orders
+
+Body:
+```
+{
+  "ativo": "PETR4",
+  "lado": "C",
+  "quantidade": 1000,
+  "preco": 10.50
+}
+
 ```
 
 ### 🐳 Docker
