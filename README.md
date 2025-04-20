@@ -1,158 +1,208 @@
+
 # Base-exchange
-Aplicação Deve calcular a Exposição Financeira por ativo.
 
-## Stacks
-- ASP.NET CORE 8;
-- ENTITY FRAMEWORK;
-- SQL SERVER;
-- DOCKER;
-- REACTJS
+Aplicação desenvolvida para calcular a **exposição financeira por ativo**, com base em ordens de compra e venda.
 
-### 🛠️ Banco de Dados & ORM
- O projeto utiliza Entity Framework Core com SQL Server para persistência dos dados.
- 
- Geralmente monto a query na mão, mas o "migration" facilita muito esse processo.
- 
- **Instalação**:
- - ```dotnet add package Microsoft.EntityFrameworkCore.SqlServer```
- - ```dotnet add package Microsoft.EntityFrameworkCore.Tools```
- - ```dotnet tool install --global dotnet-ef```
- 
- **Migrations**:
- As tabelas são criadas automaticamente via ```dotnet ef database update```, com base nas migrations.
- Para realização da migrations precisou-se somente rodar os comandos:
- - ```dotnet ef migrations add InitialCreate```
- - ```dotnet ef database update```
- 
- Desafio encontrado
- 
- Durante a criação do seed com HasData(), utilizei DateTime.UtcNow, o que gerava migrações "pendentes" a cada build, pois o valor era dinâmico. O problema foi resolvido substituindo por uma data fixa (new DateTime(2024, 04, 18)), conforme orientação da documentação oficial.
- 
- Criação da base: ```CREATE DATABASE BaseExchangedb```
- 
- Tabelas criadas:
- 
- - Ordens: registra todas as ordens recebidas, aceitas ou rejeitadas.
- 
- - ExposicoesFinanceiras: armazena a exposição financeira atual de cada ativo.
- 
-  O SQL Server ta rodando em um container, comando de criação da base.
+---
 
-### ⚙️  Design-time DbContext Factory 
- Foi criado um DBContextFactory para caso precisem execultar a migration sem execultar a aplicação.
- Devido a separação dos projetos em camadas (Infra, Domain, App, API), foi necessário criar uma DBContextFactory que buscasse a configuração da API para permitir a geração de migrations com ```dotnet ef```.
- 
- Hedando o ```IDesignTimeDbContextFactory<DBContext>``` para permitir a execução correta dos comandos de migrations via CLI (dotnet ef migrations add, dotnet ef database update), já que o EF Core não    consegue resolver a injeção de dependência automaticamente fora da aplicação ASP.NET.
-  A classe utiliza ConfigurationBuilder apontando para o caminho do appsettings.json, garantindo que a connection string seja lida de forma centralizada.
-## 🧱 Camada App
- Foi criado a service, sua interface e os DTOs. Inicialmente tinha pensado em criar uma camada Contract, para os DTOs, mas como o projeto é pequeno e os DTOs só serão usados no APP e API, optei em manter no mesmo.
- 
- Services:
- - OrdemServices
-   
- Interfaces:
- - IOrdemServices
-   
- DTOs:
- - OrderResponseDTO
- - OrderRequestDTO
+## 🚀 Stacks Utilizadas
 
- ### FluentValidation - DTOs
-  Foi adicionado validação no DTO antes de chegar na controller. Evitando validações na controllers ou service e garantindo uma validação estruturada e desacoplada.
-   ```OrderRequestValidator```, herda o ```AbstractValidator<OrderRequestDTO>```.
-  
- App depende da camada ```Infra```, por causa do **DBContext**, que é chamado no construtor.
+- ASP.NET Core 8  
+- Entity Framework Core  
+- SQL Server  
+- Docker  
+- ReactJS (a ser implementado)
 
-## 🧱 Camda Domain
-Na camada de dominio foi criado as entidades/modelos, ```ExposicaoFinaceira``` e ```Ordem```. 
-Respeitando os principios do DDD, a dominio se mantem isolada.
+---
 
-## 🧱 Camada Infra
-Na Infra temos a conexão com o banco e a migration. Caso haja a necessidade da migração sem rodar o projeto foi criado um factory para instaciar o dbocontext sem ta em runtime.
-```DBContext , DBContextFactory```.
-## Primary Constructors
-Aproveitei para usar um recurso novo, que veio junto com o C# 12, chamado "Primary Constructors".
+## 🛠️ Banco de Dados & ORM
 
-Com o novo recuso abrstraio a necessidade de criar um construtor, passando o parametro no corpo da classe.
+O projeto utiliza **Entity Framework Core com SQL Server** para persistência de dados.
+
+Em projetos reais costumo escrever as queries à mão, mas utilizei `Migrations` para facilitar e estruturar o desafio técnico.
+
+### 📦 Pacotes utilizados
+
+```
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+dotnet add package Microsoft.EntityFrameworkCore.Tools
+dotnet tool install --global dotnet-ef
+```
+
+### 🏗️ Criação do banco e tabelas
+
+As tabelas são criadas automaticamente a partir das `Migrations`.
+
+```
+dotnet ef migrations add InitialCreate
+dotnet ef database update
+```
+
+✅ **Importante**: ao rodar a aplicação, o EF Core aplica automaticamente as migrations (via `Database.Migrate()`), não sendo necessário criar o banco manualmente.
+
+---
+
+### 🐞 Desafio encontrado
+
+Ao utilizar `HasData()` no `OnModelCreating`, usei `DateTime.UtcNow`, o que fazia com que o EF gerasse novas migrations a cada build.  
+Corrigi isso fixando a data com `new DateTime(2024, 04, 18)` conforme a recomendação da documentação oficial.
+
+---
+
+## 🧱 Arquitetura em Camadas
+
+### 📁 Camada Domain
+
+Contém os modelos de domínio:
+
+- `ExposicaoFinanceira`
+- `Ordem`
+
+Seguindo princípios do DDD, essa camada se mantém isolada.
+
+---
+
+### 📁 Camada Infra
+
+Contém o `DBContext` e a `DbContextFactory`.
+
+> A `DbContextFactory` foi necessária para que fosse possível rodar as migrations via CLI (`dotnet ef`) em um projeto separado da API.
+
+---
+
+### 📁 Camada App
+
+Contém:
+
+- Service: `OrdemService`
+- Interface: `IOrdemService`
+- DTOs: `OrderRequestDTO` e `OrderResponseDTO`
+- Validações: `OrderRequestValidator` (FluentValidation)
+
+> Inicialmente pensei em criar uma camada `Contract` para os DTOs, mas como eles só são usados entre App e API, optei por mantê-los no `App`.
+
+---
+
+### ✅ FluentValidation
+
+As validações são feitas no DTO (`OrderRequestDTO`) utilizando FluentValidation de forma desacoplada da Controller:
+
+```csharp
+public class OrderRequestValidator : AbstractValidator<OrderRequestDTO> { ... }
+```
+
+---
+
+### 🆕 Recurso: Primary Constructors
+
+Aproveitei para utilizar um recurso novo do C# 12, os **Primary Constructors**, eliminando a necessidade de declarar construtores manuais em serviços como:
+
+```csharp
+public class OrdemService(DBContext context) : IOrdemService { ... }
+```
+
+---
 
 ## 🧪 Testes Automatizados
-Criado um projeto de Teste xUnit, ```Testes```.
 
-- Testes unitários implementados com xUnit
- 
-- Banco em memória para simular comportamento real
-- Casos testados:git clone https://github.com/themanuca/Base-exchange.git
-cd Base-exchange
+Foi criado o projeto de testes `Testes` com:
 
-  - Ordem válida
-  - Exposição acima do limite
-  - Ordem de venda
-  - Ativo inválido
-    
-Libs instaladas:
-- ```Moq```
-- ```EntityFrameworkCore.InMemory```
-  
-Foi adicionado a referencia da camada do App ```App.csproj```.
+- **xUnit** para testes unitários
+- **EF Core InMemory** simulando o banco de dados
+- **Moq** para simulações (quando necessário)
 
-**Executar Teste**
-Acesse a pasta do projeto e execute o teste:
+### 🧬 Casos testados
+
+- Ordem válida
+- Ordem que ultrapassa a exposição
+- Ordem de venda
+- Ativo inexistente
+
+### 📦 Pacotes utilizados
+
+```
+dotnet add package xunit
+dotnet add package Moq
+dotnet add package Microsoft.EntityFrameworkCore.InMemory
+```
+
+### ▶️ Executando os testes
+
 ```
 cd Testes
-dotnet testados
+dotnet test
 ```
 
-## 🚀 Como Executar o Projeto
-**Clone o projeto**
+---
+
+## ⚙️ Como Executar Localmente
+
+### 🧭 Clone o repositório
+
 ```
 git clone https://github.com/themanuca/Base-exchange.git
 cd Base-exchange
 ```
-**Configure o banco de dados (SQL Server)**
-```
- "ConnectionStrings": {
-   "DefaultConnection": "Server=localhost;Database=BaseExchangedb;Encrypt=true;TrustServerCertificate=true;"
- },
-```
-Criação da base: ```CREATE DATABASE BaseExchangedb```
 
-**Restaure os pacotes**
-```dotnet restore```
-**Execute a migration e crie o banco**
-A configuração e conexão com banco se encontra na camada Infra.
-```
-dotnet ef database update --project Infra
- ```
-**Execute a aplicação**
-```dotnet run --project APIBaseExchange```
+### 🧰 Configure o banco de dados local (SQL Server)
 
-## 📮 Testando a API
-Endpoint principal:
-POST /api/orders
+No `appsettings.json`:
 
-Body:
-```
-{
-  "ativo": "PETR4",
-  "lado": "C",
-  "quantidade": 1000,
-  "preco": 10.50
+```json
+"ConnectionStrings": {
+  "DefaultConnection": "Server=localhost;Database=BaseExchangeDb;User Id=sa;Password=SenhaForte123!;Encrypt=true;TrustServerCertificate=true;"
 }
-
 ```
 
-### 🐳 Docker
+> O banco será criado automaticamente na primeira execução da aplicação.
 
-O `docker-compose.yml` está configurado para subir apenas a API por padrão, pois estou usando um container do SQLServer que ja tenho no meu docker.
+### 📦 Restaure os pacotes
 
-Caso deseje rodar o SQL Server também via Docker, **basta descomentar a seção `sqlserver` e a referência em `depends_on`**.
+```
+dotnet restore
+```
 
-📌 A connection string no `appsettings.Development.json` está configurada para:
+### 🛠️ Execute a aplicação
+
+```
+dotnet run --project APIBaseExchange
+```
+
+### 🌐 Acesse o Swagger
+
+```
+http://localhost:5000/swagger
+```
+
+---
+
+## 🐳 Executando com Docker
+
+O projeto possui um `docker-compose.yml` que sobe a **API e o SQL Server** automaticamente.
+
+### ▶️ Subir os containers
+
+```
+docker-compose up --build
+```
+
+### 🌐 Acessar o Swagger da API
+
+```
+http://localhost:8080/swagger
+```
+
+### 🧠 Observação importante
+
+A API executa automaticamente o `Database.Migrate()` na inicialização.  
+✅ Isso significa que **o banco é criado automaticamente, sem necessidade de rodar scripts manuais**.
+
+---
+
+### 🧭 Connection String usada no Docker
+
 ```json
 "Server=host.docker.internal,1433;Database=BaseExchangeDb;User=sa;Password=SenhaForte123!;TrustServerCertificate=True;"
 ```
-No momento, estou usando o `appsettings.json` local com:
-```
- "Server=localhost;Database=BaseExchangedb;Encrypt=true;TrustServerCertificate=true;User Id=sa;Password=SenhaForte123!;"
-```
 
+> Se preferir rodar a API com banco local, basta comentar o serviço `sqlserver` no `docker-compose.yml`.
