@@ -63,11 +63,11 @@ Aplicação Deve calcular a Exposição Financeira por ativo.
   
  App depende da camada ```Infra```, por causa do **DBContext**, que é chamado no construtor.
 
-## Domain
+## Camda Domain
 Na camada de dominio foi criado as entidades/modelos, ```ExposicaoFinaceira``` e ```Ordem```. 
 Respeitando os principios do DDD, a dominio se mantem isolada.
 
-## Infra
+## Camada Infra
 Na Infra temos a conexão com o banco e a migration. Caso haja a necessidade da migração sem rodar o projeto foi criado um factory para instaciar o dbocontext sem ta em runtime.
 ```DBContext , DBContextFactory```.
 ## Primary Constructors
