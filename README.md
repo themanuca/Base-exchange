@@ -178,7 +178,7 @@ http://localhost:5000/swagger
 
 ## 🐳 Executando com Docker
 
-O projeto possui um `docker-compose.yml` que sobe a **API e o SQL Server** automaticamente.
+O projeto possui um `docker-compose.yml` que sobe a **API, SQL Server, e o Front** automaticamente.
 
 ### ▶️ Subir os containers
 
