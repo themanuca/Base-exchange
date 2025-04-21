@@ -5,15 +5,15 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-COPY ../APIBaseExchange/APIBaseExchange.csproj APIBaseExchange/
-COPY ../App/App.csproj App/
-COPY ../Domain/Domain.csproj Domain/
-COPY ../Infra/Infra.csproj Infra/
+COPY BaseExchange/APIBaseExchange/APIBaseExchange.csproj APIBaseExchange/
+COPY BaseExchange/App/App.csproj App/
+COPY BaseExchange/Domain/Domain.csproj Domain/
+COPY BaseExchange/Infra/Infra.csproj Infra/
 
 RUN dotnet restore APIBaseExchange/APIBaseExchange.csproj
 
 COPY .. .
-WORKDIR /src/APIBaseExchange
+WORKDIR /src/BaseExchange/APIBaseExchange
 RUN dotnet build APIBaseExchange.csproj -c Release -o /app/build
 
 FROM build AS publish
