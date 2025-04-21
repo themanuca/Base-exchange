@@ -191,7 +191,6 @@ docker-compose up --build
 ```
 http://localhost:8080/swagger
 ```
-
 ### 🧠 Observação importante
 
 A API executa automaticamente o `Database.Migrate()` na inicialização.  
@@ -205,4 +204,23 @@ A API executa automaticamente o `Database.Migrate()` na inicialização.
 "Server=host.docker.internal,1433;Database=BaseExchangeDb;User=sa;Password=SenhaForte123!;TrustServerCertificate=True;"
 ```
 
-> Se preferir rodar a API com banco local, basta comentar o serviço `sqlserver` no `docker-compose.yml`.
+> Se preferir rodar a API com banco local, basta comentar o serviço `sqlserver` no `docker-compose.yml`
+
+
+## 🖥️ Frontend React
+
+O projeto possui uma interface em React + TypeScript desenvolvida com Vite.
+
+Ela permite:
+
+- Enviar ordens de compra e venda
+- Visualizar a exposição financeira resultante
+- Validação dos dados do formulário
+- Feedback visual de sucesso e erro
+
+### ▶️ Executando localmente
+
+```bash
+cd BaseExchangeFront
+npm install
+npm run dev
