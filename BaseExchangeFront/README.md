@@ -12,6 +12,7 @@ Frontend desenvolvido em **React + TypeScript + Vite** para consumir a API do pr
 - Vite
 - Axios
 - Tailwind CSS
+- Docker
 
 ---
 
@@ -25,6 +26,13 @@ A aplicação permite:
 - Exibir mensagens de erro ou sucesso
 - Listar todas as ordens já registradas
 
+---
+## 🐳 Executando tudo com Docker
+A aplicação completa (API + Banco + Frontend) pode ser executada via Docker com:
+
+``` 
+docker-compose up --build
+```
 ---
 
 ## 📦 Instalação
