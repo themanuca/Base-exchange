@@ -33,6 +33,7 @@ A aplicação completa (API + Banco + Frontend) pode ser executada via Docker co
 ``` 
 docker-compose up --build
 ```
+Ao executar a aplicação via Docker, pode ignorar todos os passos de instalação e configuração do projeto. 
 ---
 
 ## 📦 Instalação
