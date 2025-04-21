@@ -12,6 +12,8 @@ const initialState: OrdemDTO = {
 export function OrderForm() {
   const [form, setForm] = useState(initialState);
   const [resposta, setResposta] = useState<RespostaOrdem | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -21,8 +23,34 @@ export function OrderForm() {
     }));
   };
 
+  const validar = () => {
+    const err: Record<string, string> = {};
+    if (!form.ativo){
+        err.ativo = 'Ativo é obrigatório';
+    } 
+    if (!form.lado){
+        err.lado = 'Lado é obrigatório';
+    }
+    if (form.quantidade <= 0){
+        err.quantidade = 'Quantidade deve ser maior que zero';
+    }
+    if (form.preco <= 0){
+        err.preco = 'Preço deve ser maior que zero';
+    }
+    setErrors(err);
+    return Object.keys(err).length === 0;
+  };
+
   const enviar = async (e: React.FormEvent) => {
+    debugger
     e.preventDefault();
+    if (!validar()){
+        return;
+    }
+
+    setLoading(true);
+    setResposta(null);
+
     try {
       const payload = {
         ativo: form.ativo,
@@ -33,7 +61,13 @@ export function OrderForm() {
       const { data } = await api.post<RespostaOrdem>('/ordem', payload);
       setResposta(data);
     } catch (err: any) {
-      setResposta({ sucesso: false, exposicao_atual: 0, msg_erro: 'Erro ao enviar ordem.' });
+      setResposta({
+        sucesso: false,
+        exposicao_atual: 0,
+        msg_erro: err.response?.data?.message || 'Erro ao enviar ordem.',
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -41,32 +75,65 @@ export function OrderForm() {
     <form onSubmit={enviar} className="max-w-md mx-auto p-4 bg-white shadow-md rounded space-y-4">
       <h2 className="text-xl font-semibold">Enviar Ordem</h2>
 
-      <select name="ativo" value={form.ativo} onChange={handleChange} className="w-full border p-2 rounded">
-        <option value="PETR4">PETR4</option>
-        <option value="VALE3">VALE3</option>
-        <option value="VIIA4">VIIA4</option>
-      </select>
+      <div>
+        <label>Ativo:</label>
+        <select name="ativo" value={form.ativo} onChange={handleChange} className="w-full border p-2 rounded">
+          <option value="">Selecione</option>
+          <option value="PETR4">PETR4</option>
+          <option value="VALE3">VALE3</option>
+          <option value="VIIA4">VIIA4</option>
+        </select>
+        {errors.ativo && <p className="text-sm text-red-500">{errors.ativo}</p>}
+      </div>
 
-      <select name="lado" value={form.lado} onChange={handleChange} className="w-full border p-2 rounded">
-        <option value="Compra">Compra</option>
-        <option value="Venda">Venda</option>
-      </select>
+      <div>
+        <label>Ordem:</label>
+        <select name="lado" value={form.lado} onChange={handleChange} className="w-full border p-2 rounded">
+          <option value="Compra">Compra</option>
+          <option value="Venda">Venda</option>
+        </select>
+        {errors.lado && <p className="text-sm text-red-500">{errors.lado}</p>}
+      </div>
 
-      <input type="number" name="quantidade" placeholder="Quantidade"
-        className="w-full border p-2 rounded" min={1} max={99999}
-        value={form.quantidade} onChange={handleChange} />
+      <div>
+        <label>Quantidade:</label>
+        <input
+          type="number"
+          name="quantidade"
+          className="w-full border p-2 rounded"
+          min={1}
+          value={form.quantidade}
+          onChange={handleChange}
+        />
+        {errors.quantidade && <p className="text-sm text-red-500">{errors.quantidade}</p>}
+      </div>
 
-      <input type="number" name="preco" placeholder="Preço"
-        className="w-full border p-2 rounded" step="0.01" max={999.99}
-        value={form.preco} onChange={handleChange} />
+      <div>
+        <label>Preço:</label>
+        <input
+          type="number"
+          name="preco"
+          className="w-full border p-2 rounded"
+          step="0.01"
+          value={form.preco}
+          onChange={handleChange}
+        />
+        {errors.preco && <p className="text-sm text-red-500">{errors.preco}</p>}
+      </div>
 
-      <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-        Enviar Ordem
+      <button
+        type="submit"
+        disabled={loading}
+        className={`w-full py-2 px-4 rounded text-white ${loading ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'}`}
+      >
+        {loading ? 'Enviando...' : 'Enviar Ordem'}
       </button>
 
       {resposta && (
-        <div className={`p-2 rounded ${resposta.sucesso ? 'bg-green-100' : 'bg-red-100'}`}>
-          <p><strong>Exposição Atual:</strong> R$ {resposta.exposicao_atual.toFixed(2)}</p>
+        <div className={`p-2 mt-4 rounded ${resposta.sucesso ? 'bg-green-100' : 'bg-red-100'}`}>
+          <p>
+            <strong>Exposição Atual:</strong> R$ {resposta.exposicao_atual.toFixed(2)}
+          </p>
           {!resposta.sucesso && <p className="text-red-500">{resposta.msg_erro}</p>}
         </div>
       )}
