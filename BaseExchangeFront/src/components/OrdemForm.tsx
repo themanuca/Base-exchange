@@ -40,7 +40,6 @@ export function OrderForm() {
     setErrors(err);
     return Object.keys(err).length === 0;
   };
-
   const enviar = async (e: React.FormEvent) => {
     debugger
     e.preventDefault();
@@ -62,9 +61,9 @@ export function OrderForm() {
       setResposta(data);
     } catch (err: any) {
       setResposta({
-        sucesso: false,
-        exposicao_atual: 0,
-        msg_erro: err.response?.data?.message || 'Erro ao enviar ordem.',
+        Sucesso: false,
+        ExposicaoAtual: 0,
+        MsgErro: err.response?.data?.message || 'Erro ao enviar ordem.',
       });
     } finally {
       setLoading(false);
@@ -130,11 +129,11 @@ export function OrderForm() {
       </button>
 
       {resposta && (
-        <div className={`p-2 mt-4 rounded ${resposta.sucesso ? 'bg-green-100' : 'bg-red-100'}`}>
+        <div className={`p-2 mt-4 rounded ${resposta.Sucesso ? 'bg-green-100' : 'bg-red-100'}`}>
           <p>
-            <strong>Exposição Atual:</strong> R$ {resposta.exposicao_atual.toFixed(2)}
+            <strong>Exposição Atual:</strong> R$ {resposta.ExposicaoAtual.toFixed(2)}
           </p>
-          {!resposta.sucesso && <p className="text-red-500">{resposta.msg_erro}</p>}
+          {!resposta.Sucesso && <p className="text-red-500">{resposta.MsgErro}</p>}
         </div>
       )}
     </form>

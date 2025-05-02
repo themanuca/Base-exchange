@@ -9,7 +9,7 @@ export interface OrdemDTO {
 }
 
 export interface RespostaOrdem {
-  sucesso: boolean;
-  exposicao_atual: number;
-  msg_erro?: string;
+  Sucesso: boolean;
+  ExposicaoAtual: number;
+  MsgErro?: string;
 }
